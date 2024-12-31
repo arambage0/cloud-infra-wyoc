@@ -1,1 +1,17 @@
 
+#exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+#sudo su - 
+cd ~/
+pwd
+echo "Nuwan Arambage" >>  /tmp/user-data.log
+
+
+source /etc/profile.d/proxy_install.sh
+
+env | grep -i proxy >> /tmp/user-data.log 
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+cd /usr/local/
+sudo chmod 775 -R aws-cli/
