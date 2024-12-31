@@ -1,3 +1,4 @@
+
 source ./ec2-config.properties
 
 console_message() {
