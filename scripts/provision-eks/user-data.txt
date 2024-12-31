@@ -1,15 +1,11 @@
 
-#exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-#sudo su - 
+# setting logging for user-data section
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 cd ~/
-pwd
-echo "Nuwan Arambage" >>  /tmp/user-data.log
-
-
+# Comment below line in your env. It is not required
 source /etc/profile.d/proxy_install.sh
 
-env | grep -i proxy >> /tmp/user-data.log 
-
+# Installing latest aws cli version
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
