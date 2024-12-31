@@ -1,3 +1,4 @@
+#!/bin/bash
 
 source ./ec2-config.properties
 
