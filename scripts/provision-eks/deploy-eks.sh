@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 # Source the configuration file
 source ./eks-config.properties
