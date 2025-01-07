@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 # Default values
 AWS_REGION="eu-west-1"
