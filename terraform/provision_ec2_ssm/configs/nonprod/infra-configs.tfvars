@@ -58,7 +58,7 @@ mandatory_tags = {
 
 
 recommended_tags = {
-  BusinessUnit        = "LSEGSurveillance"
+  BusinessUnit        = "SagaSurveillance"
   Owner               = "AWS-SAGA-LTS-NONPROD@SAGA.COM"
   BusinessCriticality = "1"
   AssignmentGroup     = "CMUKAppSupportSurv"
