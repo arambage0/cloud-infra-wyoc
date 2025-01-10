@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 export TF_VAR_s3_bucket="my-wyoc-s3-bucket-a"
 export TF_VAR_s3_key="terraform/saga-infra.tfstate"
