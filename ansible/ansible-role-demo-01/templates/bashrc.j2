@@ -1,0 +1,12 @@
+# .bashrc for {{ app.username }}
+
+# Environment Variables
+export SYSTEM_HOME={{ app.system_home }}
+export SYSTEM_NAME={{ app.system_name }}
+export SYSTEM_VERSION={{ app.system_version }}
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+

@@ -1,0 +1,6 @@
+---
+# tasks file for db_settings
+
+- name: print the hostname and engineer name
+  debug:
+    msg: "The system hostname is {{ ansible_facts['hostname'] }}. The author is {{ dev.first_name }}  {{ dev.last_name }}"

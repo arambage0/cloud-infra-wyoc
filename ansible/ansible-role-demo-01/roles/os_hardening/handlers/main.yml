@@ -1,0 +1,12 @@
+---
+# handlers file for os_hardening
+
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+
+- name: reboot_host
+  reboot:
+    reboot_timeout: 360
+

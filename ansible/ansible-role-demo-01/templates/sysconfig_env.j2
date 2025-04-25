@@ -1,0 +1,8 @@
+# Environment for {{ app.system_name }}
+# These below variables can be used in systemd unit using EnvironmentFile=
+# EnvironmentFile=/etc/sysconfig/{{ app.system_name | lower }}
+SYSTEM_NAME={{ app.system_name }}
+SYSTEM_VERSION={{ app.system_version }}
+SYSCONFIG_PARAM_ONE={{ app.sysconfig_flag_1  }}
+SYSCONFIG_PARAM_TWO={{ app.sysconfig_flag_2  }}
+SYSCONFIG_PARAM_THREE={{ app.sysconfig_flag_3  }}

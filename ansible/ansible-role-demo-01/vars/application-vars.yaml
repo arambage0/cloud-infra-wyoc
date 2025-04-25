@@ -1,0 +1,12 @@
+app:
+  sysconfig_flag_1: enable-https
+  sysconfig_flag_2: enable-port-forwarding
+  sysconfig_flag_3: enable-dns-caching
+  username: appuser
+  system_home: /x01/appuser
+  system_name: SYSDNA_APP
+  system_version: v1.0.13
+  ulimits:
+    - { name: 'nofile', soft: 65535, hard: 65535 }
+    - { name: 'nproc', soft: 65535, hard: 65535 }
+    - { name: 'stack', soft: 8192, hard: 8192 }

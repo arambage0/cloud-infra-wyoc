@@ -1,0 +1,83 @@
+---
+# vars file for os_customization
+
+# testing purpose variable 
+dev: 
+  first_name: Nuwan
+  last_name: Arambage
+
+web: 
+  server_package: httpd
+  service_name: httpd
+  port: 80
+  docroot: /var/www/html 
+
+
+os: 
+    timezone_location: "America/New_York"
+    ops_packages:
+      - mlocate
+      - net-tools
+      - bind-utils
+      - coreutils
+      - nmap
+      - tcpdump
+      - sysstat
+
+    app_packages:
+      - curl
+      - wget
+      - git
+      - vim-enhanced
+
+    service_packages:
+      - chrony
+      - firewalld
+      - audit   
+      - vsftpd  # this is for testing, remove later 
+      - postfix # this is for testing, remove later 
+      
+
+
+    service_names:
+      - chronyd
+      - firewalld
+      - auditd
+      - postfix  # this is for testing, remove later
+      - vsftpd   # this is for testing, remove later 
+
+
+hardening:
+    unwanted_services: 
+      - postfix
+      - vsftpd
+      - cups
+      - bluetooth
+    
+    unwanted_packages:
+      - snapd
+      - xinetd
+      - telnet
+      - rsh
+      - ypbind
+      - tftp
+      - talk
+      - nis
+      - samba
+      - squid
+      - snmp
+      - nfs-utils
+    
+    firewalld_ports: 
+      - ssh
+      - http
+      - https
+
+    kernel_parameters:
+      - { name: 'net.ipv4.tcp_syncookies', value: '1' }
+      - { name: 'net.ipv4.conf.all.rp_filter', value: '1' }
+      - { name: 'net.ipv4.conf.default.rp_filter', value: '1' }
+      - { name: 'kernel.dmesg_restrict', value: '1' }
+      - { name: 'kernel.kptr_restrict', value: '2' }
+
+

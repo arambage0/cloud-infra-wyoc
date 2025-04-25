@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to {{ ansible_hostname }}</title>
+</head>
+<body>
+    <h1>Hello from {{ ansible_hostname }}!</h1>
+    <p>This server is running {{ web.server_package }} on Rocky Linux.</p>
+    <p>Current time: {{ ansible_date_time.iso8601 }}</p>
+    
+    {% if ansible_distribution_major_version == '9' %}
+        <p><strong>Rocky Linux 9 detected!</strong></p>
+    {% endif %}
+</body>
+</html>

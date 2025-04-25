@@ -1,0 +1,76 @@
+---
+# tasks file for os_hardening
+#- name: print the hostname and engineer name
+#  debug:
+#    msg: "The system hostname is {{ ansible_facts['hostname'] }}. The author is {{ dev.first_name }}  {{ dev.last_name }}"
+#
+#
+#
+- name: remove unwanted packages
+  dnf:
+    name: "{{ hardening.unwanted_packages  }}"
+    state: absent
+
+
+
+- name: Check if unwanted service exists
+  shell:  "systemctl list-unit-files | grep -q '^{{ item }}.service'"
+  loop: "{{ hardening.unwanted_services  }}"
+  register: service_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: Stop unwanted services if they exists
+  service:
+     name: "{{ item.item }}"
+     state: stopped
+     enabled: no
+  loop: "{{ service_check.results }}"
+  when: item.rc == 0
+
+
+- name: allow ssh,http,https in firewalled
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: yes
+    immediate: yes
+  loop: "{{ hardening.firewalld_ports }}"
+
+
+- name: Tune kernel parameters
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+  loop: "{{ hardening.kernel_parameters }}"
+
+
+- name: Add a basic audit config
+  ansible.builtin.copy:
+    src: ../files/audit.rules
+    dest: /etc/audit/rules.d/audit.rules
+    owner: root
+    group: root
+    mode: 0600
+  notify: reboot_host
+
+
+
+- name: Disable root SSH login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^\s*#?\s*PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+  notify: restart sshd
+
+
+- name: Disable password authenticated SSH login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^\s*#?\s*PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+    state: present
+  notify: restart sshd

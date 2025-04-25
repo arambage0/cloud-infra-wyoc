@@ -1,0 +1,5 @@
+# Rocky nodes - managed by Ansible
+{% for host in groups['rocky_nodes'] %}
+{{ hostvars[host]['ansible_host'] }} {{ host }}
+{% endfor %}
+

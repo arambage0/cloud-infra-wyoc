@@ -1,0 +1,44 @@
+---
+# tasks file for web_settings
+
+#- name: print the hostname and engineer name
+#  debug:
+#    msg: "The system hostname is {{ ansible_facts['hostname'] }}. The author is {{ dev.first_name }}  {{ dev.last_name }}"
+#
+#
+
+- name: Install {{ web.server_package }} (Apache)
+  dnf:  # or 'yum' for older versions
+    name: "{{ web.server_package }}"
+    state: present
+
+
+- name: Deploy customized index.html
+  template:
+    src: ../templates/index.html.j2
+    dest: "{{ web.docroot }}/index.html"
+    owner: apache
+    group: apache
+    mode: 0644
+
+
+- name: Deploy custom 404 page
+  template:
+    src: ../templates/404.html.j2
+    dest: /var/www/html/404.html
+
+- name: Configure error document
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    line: 'ErrorDocument 404 /404.html'
+  notify: restart httpd
+
+
+- name: Start and enable {{ web.service_name }} service
+  service:
+    name: "{{ web.service_name }}"
+    state: started
+    enabled: yes
+
+
+

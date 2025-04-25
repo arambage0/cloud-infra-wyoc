@@ -1,0 +1,27 @@
+- name: Apply all roles privately
+  hosts: rocky_nodes
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
+    - name: Import OS Customization role privately
+      import_role:
+        name: os_customization
+      private: yes
+
+    - name: Import OS Hardening role privately
+      import_role:
+        name: os_hardening
+      private: yes
+
+    - name: Import Web Settings role privately
+      import_role:
+        name: web_settings
+      private: yes
+
+    - name: Import DB Settings role privately
+      import_role:
+        name: db_settings
+      private: yes
+

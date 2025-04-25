@@ -1,0 +1,98 @@
+---
+# tasks file for os_customization
+
+#- name: print the hostname and engineer name 
+#  debug: 
+#    msg: "The system hostname is {{ ansible_facts['hostname'] }}. The author is {{ dev.first_name }}  {{ dev.last_name }}"
+#
+#
+
+- name: Set hostname dynamically  from inventory.ini
+  hostname:
+    name: "{{ inventory_hostname }}"  # Sets to node1, node2, node3
+
+- name: Render extra hosts to temporary file
+  template:
+    src: ../templates/extra_hosts.j2
+    dest: /tmp/rocky_hosts_entries
+
+- name: Read rendered hosts file from remote
+  slurp:
+    src: /tmp/rocky_hosts_entries
+  register: rocky_hosts_data
+
+- name: Insert rocky_nodes block into /etc/hosts
+  blockinfile:
+    path: /etc/hosts
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - ROCKY HOSTS"
+    block: "{{ rocky_hosts_data['content'] | b64decode }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configure timezone
+  timezone:
+      name: "{{ os.timezone_location }}"
+    
+
+- name: install ops related packages
+  dnf:
+    name: "{{ os.ops_packages }}"
+    state: present
+
+- name: install app related packages
+  dnf:
+    name: "{{ os.app_packages }}"
+    state: present
+
+- name: Install service packages
+  dnf:
+    name: "{{ os.service_packages  }}"
+    state: present
+
+- name: Ensure installed service packages are enabled and started
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ os.service_names }}"
+
+
+- name: Deploy environment variables to /etc/sysconfig
+  template:
+    src: ../templates/sysconfig_env.j2
+    dest: "/etc/sysconfig/{{ app.system_name | lower }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+
+
+- name: Deploy custom MOTD
+  template:
+    src: ../templates/motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: '0644'
+
+
+- name: Deploy SSH login banner
+  template:
+    src: ../templates/ssh_banner.j2
+    dest: /etc/ssh/sshd_banner
+    owner: root
+    group: root
+    mode: '0644'
+
+
+- name: Set SSH banner
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^\s*#?\s*Banner'
+    line: 'Banner /etc/ssh/sshd_banner'
+    state: present
+  notify: restart sshd
+
+
+

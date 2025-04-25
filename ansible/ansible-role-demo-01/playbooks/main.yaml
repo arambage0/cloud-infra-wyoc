@@ -1,0 +1,16 @@
+---
+- name: Main Playbook 
+  hosts: rocky_nodes
+  gather_facts: yes
+  vars_files: 
+     - ../vars/system-vars.yaml 
+     - ../vars/application-vars.yaml 
+
+  roles: 
+    - os_customization
+    - os_hardening
+    - web_settings
+    - app_settings
+    - db_settings
+  
+

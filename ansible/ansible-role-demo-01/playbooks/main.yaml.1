@@ -1,0 +1,36 @@
+---
+- name: Main Playbook 
+  hosts: rocky_nodes
+  gather_facts: yes
+  vars_files: 
+     - vars/system-vars.yaml 
+  roles: 
+    - os_customization
+    - os_hardening
+    - web_settings
+    - db_settings
+  
+  tasks: 
+    - name: Include OS Customization role
+      include_role: 
+        name: os_customization
+        #public: false 
+    
+    - name: Include OS Hardening role 
+      include_role: 
+        name: os_hardening
+        #public: false  
+    
+    
+    - name: Include web_settings role
+      include_role: 
+        name: web_settings
+        #public: false 
+
+    
+    - name: Include db_settings role
+      include_role: 
+        name: db_settings
+        #public: false 
+
+

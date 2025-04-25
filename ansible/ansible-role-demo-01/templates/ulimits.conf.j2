@@ -1,0 +1,7 @@
+# ulimits for {{ app.username }}
+
+{% for ulimit in app.ulimits %}
+{{ app.username }} soft {{ ulimit.name }} {{ ulimit.soft }}
+{{ app.username }} hard {{ ulimit.name }} {{ ulimit.hard }}
+{% endfor %}
+
